@@ -2,8 +2,17 @@
 ruby = "3.4.4"
 lazygit = "latest"
 
-[tasks.install]
+[env]
+OBSIDIAN_VAULT_PATH = "../obsidian-test-notes/notes"
+
+[tasks.bundle]
 description = "Install project dependencies"
 run = [
     "bundle install"
+]
+
+[tasks.dev]
+description = "Start the Obsidian MCP server with sample vault"
+run = [
+    "./obsidian_server.rb"
 ]
