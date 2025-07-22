@@ -27,8 +27,7 @@ jobs:
       run: bundle exec rspec --format progress
     
     - name: Run RuboCop
-      run: bundle exec rubocop
-      continue-on-error: true
+      run: bundle exec rubocop --format github
 
   integration-test:
     runs-on: ubuntu-latest

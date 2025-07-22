@@ -190,18 +190,111 @@ Add to your Claude Desktop configuration:
 }
 ```
 
-## Requirements
+## Development
 
-- Ruby 3.2+
-- Bundler
+### Requirements
+
+- Ruby 3.4+
+- [Bundler](https://bundler.io/)
+- [mise](https://mise.jdx.dev/) (recommended for development)
+
+### Development Setup
+
+1. Install dependencies:
+```bash
+mise run bundle
+# or
+bundle install
+```
+
+2. Run the development server:
+```bash
+mise run dev
+# or
+./obsidian_server.rb
+```
+
+3. Run tests:
+```bash
+bundle exec rspec
+```
+
+### Development Tasks
+
+The project uses [mise](https://mise.jdx.dev/) for task automation:
+
+```bash
+# Install dependencies
+mise run bundle
+
+# Start development server
+mise run dev
+
+# Fix code style issues automatically
+mise run rubocop-fix
+
+# Update RuboCop todo list (after fixing violations)
+mise run rubocop-todo-update
+```
+
+### Code Style
+
+This project enforces code style using [RuboCop](https://rubocop.org/) with [rubocop-rspec](https://github.com/rubocop/rubocop-rspec):
+
+- **Automatic fixes**: Run `mise run rubocop-fix` to auto-correct violations
+- **Todo list approach**: Existing violations are tracked in `.rubocop_todo.yml`
+- **CI enforcement**: New violations will fail GitHub Actions checks
+- **Incremental improvement**: Fix violations gradually by removing entries from the todo list
+
+#### Disabled Cops
+
+- `Metrics/MethodLength`: Allows longer methods where appropriate
+- `RSpec/MultipleExpectations`: Permits multiple assertions in integration tests
+
+### Testing
+
+Comprehensive test suite with 270+ assertions:
+
+```bash
+# Run all tests
+bundle exec rspec
+
+# Run with coverage
+bundle exec rspec --format documentation
+
+# Run specific test files
+bundle exec rspec spec/integration/
+```
+
+### CI/CD
+
+GitHub Actions automatically:
+- Runs the full test suite on Ruby 3.4
+- Enforces code style with RuboCop
+- Runs integration tests
+- Provides inline PR feedback for violations
 
 ## Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+3. Make your changes following the code style guidelines
+4. Run tests and fix any style violations:
+   ```bash
+   bundle exec rspec
+   mise run rubocop-fix
+   ```
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### Code Review Checklist
+
+- [ ] Tests pass locally (`bundle exec rspec`)
+- [ ] No RuboCop violations (`bundle exec rubocop`)
+- [ ] New features include tests
+- [ ] Documentation updated if needed
+- [ ] CI checks pass on GitHub
 
 ## License
 
