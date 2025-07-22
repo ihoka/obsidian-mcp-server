@@ -7,9 +7,7 @@ module ObsidianMcp
         @vault_path ||= ENV['OBSIDIAN_VAULT_PATH'] || default_vault_path
       end
 
-      def vault_path=(path)
-        @vault_path = path
-      end
+      attr_writer :vault_path
 
       def server_name
         @server_name ||= ENV['OBSIDIAN_MCP_SERVER_NAME'] || 'obsidian-vault-server'
@@ -34,13 +32,13 @@ module ObsidianMcp
           './obsidian-test-notes/notes',
           '../../obsidian-test-notes/notes'
         ]
-        
+
         candidates.each do |path|
           expanded_path = File.expand_path(path)
           return expanded_path if File.directory?(expanded_path)
         end
-        
-        raise "No vault found. Please set OBSIDIAN_VAULT_PATH environment variable"
+
+        raise 'No vault found. Please set OBSIDIAN_VAULT_PATH environment variable'
       end
     end
   end

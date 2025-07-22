@@ -6,10 +6,10 @@ require_relative '../services/stats_service'
 module ObsidianMcp
   module Resources
     class TagCloud < ObsidianMcp::Base::Resource
-      uri "obsidian://vault/tags"
-      resource_name "Tag Cloud"
-      description "All tags used in the vault with usage counts"
-      mime_type "application/json"
+      uri 'obsidian://vault/tags'
+      resource_name 'Tag Cloud'
+      description 'All tags used in the vault with usage counts'
+      mime_type 'application/json'
 
       def content
         stats_service = ObsidianMcp::Services::StatsService.new(vault)

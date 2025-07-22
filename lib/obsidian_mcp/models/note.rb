@@ -60,25 +60,25 @@ module ObsidianMcp
           word_count: word_count,
           modified: modified_time.iso8601
         }
-        
+
         if include_content
           result[:frontmatter] = frontmatter
           result[:content] = body
           result[:links] = links
         end
-        
+
         result
       end
 
       def matches_query?(query)
         query_lower = query.downcase
-        
+
         # Check title
         return true if title.downcase.include?(query_lower)
-        
+
         # Check tags
         return true if tags.any? { |tag| tag.to_s.downcase.include?(query_lower) }
-        
+
         # Check content
         body.downcase.include?(query_lower)
       end
@@ -86,7 +86,7 @@ module ObsidianMcp
       def has_tags?(search_tags, match_all: false)
         note_tags = tags.map(&:to_s)
         search_tags = search_tags.map(&:to_s)
-        
+
         if match_all
           search_tags.all? { |tag| note_tags.include?(tag) }
         else

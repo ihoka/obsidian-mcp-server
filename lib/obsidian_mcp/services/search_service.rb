@@ -15,14 +15,14 @@ module ObsidianMcp
 
         @vault.notes_glob.each do |note_path|
           note = ObsidianMcp::Models::Note.new(note_path, @vault)
-          
-          if note.matches_query?(query)
-            match_details = determine_match_types(note, query)
-            result = note.to_hash(include_content: include_content)
-            result[:matches] = match_details
-            results << result
-            matches_found << match_details
-          end
+
+          next unless note.matches_query?(query)
+
+          match_details = determine_match_types(note, query)
+          result = note.to_hash(include_content: include_content)
+          result[:matches] = match_details
+          results << result
+          matches_found << match_details
         end
 
         {
@@ -37,12 +37,10 @@ module ObsidianMcp
 
         @vault.notes_glob.each do |note_path|
           note = ObsidianMcp::Models::Note.new(note_path, @vault)
-          
+
           next if note.tags.empty?
-          
-          if note.has_tags?(tags, match_all: match_all)
-            matching_notes << note.to_hash(include_content: include_content)
-          end
+
+          matching_notes << note.to_hash(include_content: include_content) if note.has_tags?(tags, match_all: match_all)
         end
 
         {
@@ -75,11 +73,11 @@ module ObsidianMcp
       def determine_match_types(note, query)
         matches = []
         query_lower = query.downcase
-        
+
         matches << 'title' if note.title.downcase.include?(query_lower)
         matches << 'tags' if note.tags.any? { |tag| tag.to_s.downcase.include?(query_lower) }
         matches << 'content' if note.body.downcase.include?(query_lower)
-        
+
         matches
       end
     end

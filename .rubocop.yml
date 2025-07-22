@@ -1,0 +1,8 @@
+# RuboCop configuration
+# See: https://docs.rubocop.org/rubocop/configuration.html
+
+require:
+  - rubocop-rspec
+
+Metrics/MethodLength:
+  Enabled: false

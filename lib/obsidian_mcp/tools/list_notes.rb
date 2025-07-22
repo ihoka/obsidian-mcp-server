@@ -6,10 +6,10 @@ require_relative '../services/search_service'
 module ObsidianMcp
   module Tools
     class ListNotes < ObsidianMcp::Base::Tool
-      description "List all notes in the Obsidian vault with basic metadata"
-      
+      description 'List all notes in the Obsidian vault with basic metadata'
+
       arguments do
-        optional(:include_tags).filled(:bool).description("Whether to include tags in the listing (default: true)")
+        optional(:include_tags).filled(:bool).description('Whether to include tags in the listing (default: true)')
       end
 
       def call(include_tags: true)

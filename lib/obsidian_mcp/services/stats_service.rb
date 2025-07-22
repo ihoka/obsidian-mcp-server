@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'set'
 require_relative '../models/note'
 
 module ObsidianMcp
@@ -21,9 +20,9 @@ module ObsidianMcp
           note = ObsidianMcp::Models::Note.new(note_path, @vault)
           total_notes += 1
           total_words += note.word_count
-          
+
           note.tags.each { |tag| all_tags.add(tag.to_s) }
-          
+
           total_internal_links += note.links[:internal].length
           total_external_links += note.links[:external].length
         end
@@ -32,7 +31,7 @@ module ObsidianMcp
           vault_path: @vault.vault_path.to_s,
           total_notes: total_notes,
           total_words: total_words,
-          average_words_per_note: total_notes > 0 ? (total_words.to_f / total_notes).round(1) : 0,
+          average_words_per_note: total_notes.positive? ? (total_words.to_f / total_notes).round(1) : 0,
           unique_tags: all_tags.size,
           all_tags: all_tags.to_a.sort,
           total_internal_links: total_internal_links,

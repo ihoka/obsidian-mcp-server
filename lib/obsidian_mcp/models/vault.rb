@@ -51,10 +51,10 @@ module ObsidianMcp
       def extract_links(content)
         # Extract [[Internal Links]]
         internal_links = content.scan(/\[\[([^\]]+)\]\]/).flatten
-        
+
         # Extract [External Links](url)
         external_links = content.scan(/\[([^\]]+)\]\(([^)]+)\)/).map { |text, url| { text: text, url: url } }
-        
+
         { internal: internal_links, external: external_links }
       end
     end

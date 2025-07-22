@@ -1,6 +1,7 @@
 [tools]
 ruby = "3.4.4"
 lazygit = "latest"
+gh = "latest"
 
 [env]
 OBSIDIAN_VAULT_PATH = "../obsidian-test-notes/notes"
@@ -15,4 +16,10 @@ run = [
 description = "Start the Obsidian MCP server with sample vault"
 run = [
     "./obsidian_server.rb"
+]
+
+[tasks.rubocop-fix]
+description = "Fix RuboCop errors automatically"
+run = [
+    "bundle exec rubocop --autocorrect-all"
 ]

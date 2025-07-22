@@ -6,11 +6,11 @@ require_relative '../services/search_service'
 module ObsidianMcp
   module Tools
     class SearchNotes < ObsidianMcp::Base::Tool
-      description "Search for notes in the Obsidian vault by query text"
-      
+      description 'Search for notes in the Obsidian vault by query text'
+
       arguments do
-        required(:query).filled(:string).description("Search query to find in note titles, tags, or content")
-        optional(:include_content).filled(:bool).description("Whether to include note content in results (default: false)")
+        required(:query).filled(:string).description('Search query to find in note titles, tags, or content')
+        optional(:include_content).filled(:bool).description('Whether to include note content in results (default: false)')
       end
 
       def call(query:, include_content: false)

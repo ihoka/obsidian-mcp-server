@@ -4,21 +4,21 @@ require 'fileutils'
 require 'tmpdir'
 require 'pathname'
 
-RSpec.shared_context "test vault setup" do
+RSpec.shared_context 'test vault setup' do
   let(:test_vault_dir) { @test_vault_dir }
   let(:vault) { ObsidianMcp::Models::Vault.new(test_vault_dir) }
 
-  before(:each) do
+  before do
     # Create a temporary directory for the test vault
     @test_vault_dir = Dir.mktmpdir('obsidian_test_vault')
-    
+
     # Override the config to use our test vault
     ObsidianMcp::Config.vault_path = @test_vault_dir
-    
+
     create_test_notes
   end
 
-  after(:each) do
+  after do
     # Clean up the temporary directory
     FileUtils.remove_entry(@test_vault_dir) if @test_vault_dir && File.exist?(@test_vault_dir)
   end
@@ -27,7 +27,7 @@ RSpec.shared_context "test vault setup" do
 
   def create_test_notes
     # Create a variety of test notes with different structures
-    
+
     # Simple note without frontmatter
     write_note('simple-note.md', <<~CONTENT)
       This is a simple note without frontmatter.
@@ -118,9 +118,9 @@ RSpec.shared_context "test vault setup" do
       ---
 
       #{'This is a large note with many words. ' * 50}
-      
+
       It has multiple paragraphs to test word counting functionality.
-      
+
       #{'Word counting should work correctly across paragraphs. ' * 30}
     CONTENT
 
@@ -145,7 +145,7 @@ RSpec.shared_context "test vault setup" do
     file_path = File.join(@test_vault_dir, filename)
     FileUtils.mkdir_p(File.dirname(file_path))
     File.write(file_path, content)
-    
+
     # Set a predictable modification time for consistent testing
     # Use different times for different files to test sorting
     base_time = Time.parse('2024-01-01 12:00:00 UTC')

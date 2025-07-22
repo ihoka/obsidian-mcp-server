@@ -6,12 +6,12 @@ require_relative '../services/search_service'
 module ObsidianMcp
   module Tools
     class FindByTags < ObsidianMcp::Base::Tool
-      description "Find notes that have specific tags"
-      
+      description 'Find notes that have specific tags'
+
       arguments do
-        required(:tags).filled(:array).description("Array of tags to search for")
-        optional(:match_all).filled(:bool).description("Whether to match all tags (true) or any tag (false, default)")
-        optional(:include_content).filled(:bool).description("Whether to include note content in results (default: false)")
+        required(:tags).filled(:array).description('Array of tags to search for')
+        optional(:match_all).filled(:bool).description('Whether to match all tags (true) or any tag (false, default)')
+        optional(:include_content).filled(:bool).description('Whether to include note content in results (default: false)')
       end
 
       def call(tags:, match_all: false, include_content: false)
