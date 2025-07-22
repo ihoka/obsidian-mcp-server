@@ -1,7 +1,9 @@
+inherit_from: .rubocop_todo.yml
+
 # RuboCop configuration
 # See: https://docs.rubocop.org/rubocop/configuration.html
 
-require:
+plugins:
   - rubocop-rspec
 
 Metrics/MethodLength:

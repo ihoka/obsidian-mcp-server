@@ -5,14 +5,10 @@ require 'tmpdir'
 require 'pathname'
 
 RSpec.shared_context 'test vault setup' do
-  let(:test_vault_dir) { @test_vault_dir }
+  let(:test_vault_dir) { Dir.mktmpdir('obsidian_test_vault') }
   let(:vault) { ObsidianMcp::Models::Vault.new(test_vault_dir) }
 
   before do
-    # Create a temporary directory for the test vault
-    @test_vault_dir = Dir.mktmpdir('obsidian_test_vault')
-
-    # Override the config to use our test vault
     ObsidianMcp::Config.vault_path = test_vault_dir
 
     create_test_notes

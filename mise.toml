@@ -18,8 +18,14 @@ run = [
     "./obsidian_server.rb"
 ]
 
-[tasks.rubocop-fix]
+[tasks."rubocop:fix"]
 description = "Fix RuboCop errors automatically"
 run = [
     "bundle exec rubocop --autocorrect-all"
+]
+
+[tasks."rubocop:todo-update""]
+description = "Update RuboCop todo list with current violations"
+run = [
+    "bundle exec rubocop --auto-gen-config"
 ]
