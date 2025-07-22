@@ -15,7 +15,7 @@ A Ruby-based Model Context Protocol (MCP) server for interacting with Obsidian v
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/yourusername/obsidian-mcp-server.git
 cd obsidian-mcp-server
 ```
 
@@ -127,10 +127,44 @@ Add to your Claude Desktop configuration:
 }
 ```
 
-## Requirements
+## Development
+
+### Requirements
 
 - Ruby 3.2+
 - Bundler
+
+### Running Tests
+
+This project includes a comprehensive test suite using RSpec:
+
+```bash
+# Run all tests
+bundle exec rspec
+
+# Run specific test files
+bundle exec rspec spec/integration/tools/list_notes_spec.rb
+
+# Run with verbose output
+bundle exec rspec --format documentation
+```
+
+The test suite includes:
+- Integration tests for all MCP tools
+- Test vault setup for consistent testing
+- Comprehensive coverage of search, read, and list functionality
+
+### Code Quality
+
+This project uses RuboCop for code style and quality:
+
+```bash
+# Check code style
+bundle exec rubocop
+
+# Auto-fix issues where possible
+bundle exec rubocop -A
+```
 
 ## Contributing
 
