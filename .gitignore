@@ -18,9 +18,6 @@ vendor/bundle/
 # RSpec
 spec/examples.txt
 
-# RuboCop
-.rubocop-*
-
 # Environment variables
 .env
 .env.local

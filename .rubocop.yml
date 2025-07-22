@@ -6,3 +6,6 @@ require:
 
 Metrics/MethodLength:
   Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
