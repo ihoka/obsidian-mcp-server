@@ -29,3 +29,9 @@ description = "Update RuboCop todo list with current violations"
 run = [
     "bundle exec rubocop --auto-gen-config"
 ]
+
+[tasks."docker:build"]
+description = "Build the production Docker image"
+run = [
+    "docker build -t obsidian-mcp-server ."
+]

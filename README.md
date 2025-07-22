@@ -190,6 +190,114 @@ Add to your Claude Desktop configuration:
 }
 ```
 
+## Docker Support 🐳
+
+Run the MCP server using Docker for easy deployment and environment consistency.
+
+### Quick Start with Docker
+
+1. **Build and run with Docker Compose** (recommended):
+```bash
+# Build and start the server
+docker-compose up --build
+
+# Run in detached mode
+docker-compose up -d --build
+
+# Stop the server
+docker-compose down
+```
+
+2. **Build and run with Docker directly**:
+```bash
+# Build the image
+docker build -t obsidian-mcp-server .
+
+# Run the container with your vault mounted
+docker run -it --rm \
+  -v "/path/to/your/obsidian/vault:/vault:ro" \
+  -e OBSIDIAN_VAULT_PATH=/vault \
+  obsidian-mcp-server
+```
+
+### Configuration Options
+
+Set environment variables to customize the Docker deployment:
+
+```bash
+# Set your vault path (host machine)
+export OBSIDIAN_VAULT_PATH="/Users/you/Documents/MyVault"
+
+# Optional: customize server settings
+export OBSIDIAN_MCP_SERVER_NAME="my-obsidian-server"
+export OBSIDIAN_MCP_SERVER_VERSION="2.0.0"
+
+# Start with custom configuration
+docker-compose up
+```
+
+### Development with Docker
+
+For development work, use the development container that includes test dependencies:
+
+```bash
+# Start development container
+docker-compose up obsidian-mcp-server-dev
+
+# Or run interactively
+docker-compose run --rm obsidian-mcp-server-dev /bin/sh
+
+# Inside the container, you can run tests
+bundle exec rspec
+
+# Or start the server
+./obsidian_server.rb
+```
+
+### Docker Integration with Claude Desktop
+
+To use the Dockerized server with Claude Desktop, you can run it as a persistent service:
+
+```json
+{
+  "mcpServers": {
+    "obsidian-vault": {
+      "command": "docker",
+      "args": [
+        "run", "-i", "--rm",
+        "-v", "/path/to/your/vault:/vault:ro",
+        "-e", "OBSIDIAN_VAULT_PATH=/vault",
+        "obsidian-mcp-server"
+      ]
+    }
+  }
+}
+```
+
+**Note**: Make sure to build the Docker image first: `docker build -t obsidian-mcp-server .`
+
+### Docker Files Overview
+
+- **`Dockerfile`**: Production-ready image with minimal dependencies
+- **`Dockerfile.dev`**: Development image with test dependencies and tools
+- **`docker-compose.yml`**: Easy orchestration for both production and development
+- **`.dockerignore`**: Optimizes build context by excluding unnecessary files
+
+### Vault Mounting
+
+The Docker setup mounts your Obsidian vault as a read-only volume for security:
+
+- **Host path**: Your actual Obsidian vault location
+- **Container path**: `/vault` (mapped via `OBSIDIAN_VAULT_PATH=/vault`)
+- **Access**: Read-only (`:ro`) to prevent accidental modifications
+
+### Troubleshooting Docker
+
+- **Permission issues**: Ensure your vault directory is readable
+- **Path issues**: Use absolute paths when mounting volumes
+- **Build issues**: Clear Docker cache with `docker system prune`
+- **Container logs**: Check with `docker-compose logs obsidian-mcp-server`
+
 ## Development
 
 ### Requirements
@@ -235,6 +343,9 @@ mise run rubocop-fix
 
 # Update RuboCop todo list (after fixing violations)
 mise run rubocop-todo-update
+
+# Build production Docker image
+mise run docker:build
 ```
 
 ### Code Style

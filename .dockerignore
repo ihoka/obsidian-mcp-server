@@ -1,0 +1,44 @@
+# Git and version control
+.git
+.github
+.gitignore
+
+# Development and testing files
+spec/
+.rspec
+.rubocop.yml
+.rubocop_todo.yml
+.ruby-lsp/
+
+# Documentation
+README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Development tools
+mise.toml
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Build artifacts
+coverage/
+.coverage
+
+# Local environment files
+.env
+.env.local
+.env.*.local

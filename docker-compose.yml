@@ -1,0 +1,34 @@
+services:
+  obsidian-mcp-server:
+    build: .
+    container_name: obsidian-mcp-server
+    volumes:
+      # Mount your Obsidian vault - adjust the path as needed
+      - "${OBSIDIAN_VAULT_PATH:-./obsidian-test-notes}:/vault:ro"
+    environment:
+      # Set the vault path inside the container
+      - OBSIDIAN_VAULT_PATH=/vault
+      # Optional: customize server name and version
+      - OBSIDIAN_MCP_SERVER_NAME=${OBSIDIAN_MCP_SERVER_NAME:-obsidian-vault-server}
+      - OBSIDIAN_MCP_SERVER_VERSION=${OBSIDIAN_MCP_SERVER_VERSION:-1.0.0}
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  # Development version with test dependencies
+  obsidian-mcp-server-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: obsidian-mcp-server-dev
+    volumes:
+      - "${OBSIDIAN_VAULT_PATH:-./obsidian-test-notes}:/vault:ro"
+      # Mount source code for development
+      - ".:/app"
+    environment:
+      - OBSIDIAN_VAULT_PATH=/vault
+      - OBSIDIAN_MCP_SERVER_NAME=${OBSIDIAN_MCP_SERVER_NAME:-obsidian-vault-server}
+      - OBSIDIAN_MCP_SERVER_VERSION=${OBSIDIAN_MCP_SERVER_VERSION:-1.0.0}
+    stdin_open: true
+    tty: true
+    command: /bin/sh
