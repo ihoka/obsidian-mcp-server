@@ -13,14 +13,14 @@ RSpec.shared_context 'test vault setup' do
     @test_vault_dir = Dir.mktmpdir('obsidian_test_vault')
 
     # Override the config to use our test vault
-    ObsidianMcp::Config.vault_path = @test_vault_dir
+    ObsidianMcp::Config.vault_path = test_vault_dir
 
     create_test_notes
   end
 
   after do
     # Clean up the temporary directory
-    FileUtils.remove_entry(@test_vault_dir) if @test_vault_dir && File.exist?(@test_vault_dir)
+    FileUtils.remove_entry(test_vault_dir) if test_vault_dir && File.exist?(test_vault_dir)
   end
 
   private
@@ -137,12 +137,12 @@ RSpec.shared_context 'test vault setup' do
   end
 
   def create_subdirectory(name)
-    dir_path = File.join(@test_vault_dir, name)
+    dir_path = File.join(test_vault_dir, name)
     FileUtils.mkdir_p(dir_path)
   end
 
   def write_note(filename, content)
-    file_path = File.join(@test_vault_dir, filename)
+    file_path = File.join(test_vault_dir, filename)
     FileUtils.mkdir_p(File.dirname(file_path))
     File.write(file_path, content)
 
