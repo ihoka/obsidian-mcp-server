@@ -15,7 +15,7 @@ A Ruby-based Model Context Protocol (MCP) server for interacting with Obsidian v
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/obsidian-mcp-server.git
+git clone <repository-url>
 cd obsidian-mcp-server
 ```
 
@@ -78,25 +78,88 @@ Set environment variables to customize the server:
 
 ## Architecture
 
-The project follows a clean, modular architecture:
+The project follows a clean, modular architecture built on the [fast-mcp](https://github.com/yjacquin/fast-mcp) Ruby framework:
 
 ```
-lib/
-├── obsidian_mcp/
-│   ├── config.rb              # Configuration management
-│   ├── models/
-│   │   ├── vault.rb           # Vault operations
-│   │   └── note.rb            # Individual note representation
-│   ├── services/
-│   │   ├── search_service.rb  # Search functionality
-│   │   └── stats_service.rb   # Statistics calculation
-│   ├── base/
-│   │   ├── tool.rb            # Base tool class
-│   │   └── resource.rb        # Base resource class
-│   ├── tools/                 # Individual MCP tools
-│   └── resources/             # MCP resources
-└── obsidian_mcp.rb           # Main module
+├── obsidian_server.rb         # Main executable server entry point
+├── Gemfile                    # Dependencies (fast-mcp ~> 1.5, rspec, rubocop)
+├── mise.toml                  # Development environment configuration
+├── lib/                       # Main application code
+│   ├── obsidian_mcp.rb        # Main module and server factory
+│   └── obsidian_mcp/
+│       ├── config.rb          # Environment-based configuration
+│       ├── models/            # Domain models
+│       │   ├── vault.rb       # Vault discovery and file operations
+│       │   └── note.rb        # Note parsing and metadata extraction
+│       ├── services/          # Business logic services
+│       │   ├── search_service.rb  # Content and metadata search
+│       │   └── stats_service.rb   # Vault statistics calculation
+│       ├── base/              # Abstract base classes
+│       │   ├── tool.rb        # MCP tool interface
+│       │   └── resource.rb    # MCP resource interface
+│       ├── tools/             # MCP tool implementations
+│       │   ├── search_notes.rb    # Full-text search across notes
+│       │   ├── read_note.rb       # Single note content retrieval
+│       │   ├── list_notes.rb      # Vault-wide note listing
+│       │   └── find_by_tags.rb    # Tag-based filtering
+│       └── resources/         # MCP resource implementations
+│           ├── vault_statistics.rb # Comprehensive vault metrics
+│           └── tag_cloud.rb       # Tag usage analytics
+└── spec/                      # Comprehensive test suite
+    ├── spec_helper.rb         # RSpec configuration and setup
+    ├── support/               # Test helpers and shared contexts
+    │   └── test_vault_setup.rb # Comprehensive test vault fixture
+    └── integration/           # Integration tests
+        └── tools/             # Tool-specific integration tests
+            └── list_notes_spec.rb # Complete ListNotes tool test
 ```
+
+### Key Components
+
+#### Production Code
+- **Server Entry** (`obsidian_server.rb`): Executable script that initializes and starts the MCP server
+- **Configuration** (`config.rb`): Manages vault discovery and environment variables
+- **Models**: Domain objects representing vaults and individual notes with frontmatter parsing
+- **Services**: Business logic for search operations and statistical analysis
+- **Tools**: MCP tool implementations providing interactive capabilities
+- **Resources**: MCP resource implementations providing read-only data access
+
+#### Test Infrastructure
+- **Test Suite** (`spec/`): Comprehensive RSpec-based testing with 270+ assertions
+- **Test Vault Setup** (`spec/support/test_vault_setup.rb`): Creates realistic test scenarios with:
+  - 11 different note types (simple, tagged, frontmatter-only, empty, malformed, etc.)
+  - Subdirectory handling (`projects/project-alpha.md`)
+  - Unicode and special character support
+  - Predictable timestamps for consistent testing
+  - Temporary vault cleanup
+- **Integration Tests**: Full end-to-end testing of MCP tools with edge case coverage
+- **Shared Contexts**: Reusable test fixtures with `:vault_setup` tag
+
+### Vault Discovery Logic
+
+The server automatically discovers vaults in this priority order:
+1. `OBSIDIAN_VAULT_PATH` environment variable
+2. `../obsidian-test-notes/notes` (development default)
+3. Common relative paths for Obsidian vaults
+
+### Data Flow
+
+1. **Initialization**: Server discovers vault path and validates accessibility
+2. **Tool Requests**: MCP client sends tool calls (search, read, list, filter)
+3. **Processing**: Services handle business logic using models for data access
+4. **Resource Requests**: MCP client requests statistical resources
+5. **Response**: Formatted JSON responses with note content and metadata
+
+### Testing Strategy
+
+The project uses a comprehensive testing approach:
+
+- **Integration Testing**: Tests complete MCP tool workflows from input to output
+- **Realistic Fixtures**: Test vault with diverse note types and edge cases
+- **Performance Testing**: Ensures sub-second response times
+- **Error Handling**: Tests graceful handling of malformed data and missing paths
+- **Unicode Support**: Validates proper handling of international characters and emojis
+- **Consistency Testing**: Verifies identical results across multiple calls
 
 ## Testing with MCP Inspector
 
@@ -127,44 +190,10 @@ Add to your Claude Desktop configuration:
 }
 ```
 
-## Development
-
-### Requirements
+## Requirements
 
 - Ruby 3.2+
 - Bundler
-
-### Running Tests
-
-This project includes a comprehensive test suite using RSpec:
-
-```bash
-# Run all tests
-bundle exec rspec
-
-# Run specific test files
-bundle exec rspec spec/integration/tools/list_notes_spec.rb
-
-# Run with verbose output
-bundle exec rspec --format documentation
-```
-
-The test suite includes:
-- Integration tests for all MCP tools
-- Test vault setup for consistent testing
-- Comprehensive coverage of search, read, and list functionality
-
-### Code Quality
-
-This project uses RuboCop for code style and quality:
-
-```bash
-# Check code style
-bundle exec rubocop
-
-# Auto-fix issues where possible
-bundle exec rubocop -A
-```
 
 ## Contributing
 
