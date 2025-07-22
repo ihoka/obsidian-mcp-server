@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        ruby-version: ['3.1', '3.2', '3.3']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby ${{ matrix.ruby-version }}
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    
+    - name: Run tests
+      run: bundle exec rspec --format progress
+    
+    - name: Run RuboCop
+      run: bundle exec rubocop
+      continue-on-error: true
+
+  integration-test:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+        bundler-cache: true
+    
+    - name: Run integration tests
+      run: bundle exec rspec spec/integration --format documentation
+    
+    - name: Test with different vault configurations
+      run: |
+        # Test with empty vault
+        mkdir -p tmp/empty_vault
+        OBSIDIAN_VAULT_PATH=tmp/empty_vault bundle exec rspec spec/integration/tools/list_notes_spec.rb -e "handles empty vault"
+      continue-on-error: true

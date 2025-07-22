@@ -13,6 +13,17 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'fileutils'
+require 'tmpdir'
+require 'pathname'
+
+# Load the main library
+require_relative '../lib/obsidian_mcp'
+
+# Load support files
+Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each { |f| require f }
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -95,4 +106,12 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  # Test helpers
+  config.include_context "test vault setup", :vault_setup
+  
+  # Reset config between tests
+  config.before(:each) do
+    ObsidianMcp::Config.reset!
+  end
 end
