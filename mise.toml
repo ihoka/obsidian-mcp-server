@@ -1,0 +1,9 @@
+[tools]
+ruby = "3.4.4"
+lazygit = "latest"
+
+[tasks.install]
+description = "Install project dependencies"
+run = [
+    "bundle install"
+]
