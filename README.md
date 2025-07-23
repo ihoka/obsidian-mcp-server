@@ -346,6 +346,9 @@ mise run rubocop-todo-update
 
 # Build production Docker image
 mise run docker:build
+
+# Build development Docker image
+mise run docker:build:dev
 ```
 
 ### Code Style

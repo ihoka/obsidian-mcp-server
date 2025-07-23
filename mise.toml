@@ -35,3 +35,9 @@ description = "Build the production Docker image"
 run = [
     "docker build -t obsidian-mcp-server ."
 ]
+
+[tasks."docker:build:dev"]
+description = "Build the development Docker image"
+run = [
+    "docker build -f Dockerfile.dev -t obsidian-mcp-server:dev ."
+]
