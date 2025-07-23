@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "shopify.ruby-extensions-pack",
+        "hverlin.mise-vscode",
+        "anthropic.claude-code",
+        "ms-azuretools.vscode-containers",
+        "ms-vscode-remote.remote-containers"
+    ]
+}
