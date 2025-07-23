@@ -27,6 +27,7 @@ module ObsidianMcp
 
       def default_vault_path
         # Try to find the test notes relative to the current working directory
+        warn '[DEBUG] No OBSIDIAN_VAULT_PATH set, searching for default vault...'
         candidates = [
           '../obsidian-test-notes/notes',
           './obsidian-test-notes/notes',
@@ -35,9 +36,14 @@ module ObsidianMcp
 
         candidates.each do |path|
           expanded_path = File.expand_path(path)
-          return expanded_path if File.directory?(expanded_path)
+          warn "[DEBUG] Checking candidate path: #{expanded_path}"
+          if File.directory?(expanded_path)
+            warn "[DEBUG] Found vault at: #{expanded_path}"
+            return expanded_path
+          end
         end
 
+        warn '[DEBUG] No default vault found in candidate paths'
         raise 'No vault found. Please set OBSIDIAN_VAULT_PATH environment variable'
       end
     end

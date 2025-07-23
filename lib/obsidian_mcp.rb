@@ -29,21 +29,31 @@ require_relative 'obsidian_mcp/resources/tag_cloud'
 
 module ObsidianMcp
   def self.create_server
+    warn "[DEBUG] Creating MCP server: #{Config.server_name} v#{Config.server_version}"
     server = FastMcp::Server.new(
       name: Config.server_name,
       version: Config.server_version
     )
 
     # Register tools
+    warn '[DEBUG] Registering tools...'
     server.register_tool(Tools::SearchNotes)
+    warn '[DEBUG] Registered SearchNotes tool'
     server.register_tool(Tools::ReadNote)
+    warn '[DEBUG] Registered ReadNote tool'
     server.register_tool(Tools::ListNotes)
+    warn '[DEBUG] Registered ListNotes tool'
     server.register_tool(Tools::FindByTags)
+    warn '[DEBUG] Registered FindByTags tool'
 
     # Register resources
+    warn '[DEBUG] Registering resources...'
     server.register_resource(Resources::VaultStatistics)
+    warn '[DEBUG] Registered VaultStatistics resource'
     server.register_resource(Resources::TagCloud)
+    warn '[DEBUG] Registered TagCloud resource'
 
+    warn '[DEBUG] Server creation complete'
     server
   end
 end
