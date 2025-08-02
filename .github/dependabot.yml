@@ -10,3 +10,12 @@ updates:
    directory: "/"
    schedule:
      interval: weekly
+ - package-ecosystem: "docker"
+   directory: "/"
+   schedule:
+     interval: weekly
+ - package-ecosystem: "ruby"
+   directory: "/"
+   schedule:
+     interval: weekly
+   versioning-strategy: increase
