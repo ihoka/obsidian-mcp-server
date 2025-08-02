@@ -8,9 +8,6 @@ services:
     environment:
       # Set the vault path inside the container
       - OBSIDIAN_VAULT_PATH=/vault
-      # Optional: customize server name and version
-      - OBSIDIAN_MCP_SERVER_NAME=${OBSIDIAN_MCP_SERVER_NAME:-obsidian-vault-server}
-      - OBSIDIAN_MCP_SERVER_VERSION=${OBSIDIAN_MCP_SERVER_VERSION:-1.0.0}
     stdin_open: true
     tty: true
     restart: unless-stopped
@@ -27,8 +24,6 @@ services:
       - ".:/app"
     environment:
       - OBSIDIAN_VAULT_PATH=/vault
-      - OBSIDIAN_MCP_SERVER_NAME=${OBSIDIAN_MCP_SERVER_NAME:-obsidian-vault-server}
-      - OBSIDIAN_MCP_SERVER_VERSION=${OBSIDIAN_MCP_SERVER_VERSION:-1.0.0}
     stdin_open: true
     tty: true
     command: /bin/sh

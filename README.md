@@ -95,10 +95,12 @@ The project follows a clean, modular architecture built on the [fast-mcp](https:
 ├── obsidian_server.rb         # Main executable server entry point
 ├── Gemfile                    # Dependencies (fast-mcp ~> 1.5, rspec, rubocop)
 ├── mise.toml                  # Development environment configuration
+├── CHANGELOG.md               # Project changelog and version history
 ├── lib/                       # Main application code
 │   ├── obsidian_mcp.rb        # Main module and server factory
 │   └── obsidian_mcp/
 │       ├── config.rb          # Environment-based configuration
+│       ├── logger.rb          # Semantic logging configuration
 │       ├── models/            # Domain models
 │       │   ├── vault.rb       # Vault discovery and file operations
 │       │   └── note.rb        # Note parsing and metadata extraction
@@ -120,6 +122,8 @@ The project follows a clean, modular architecture built on the [fast-mcp](https:
     ├── spec_helper.rb         # RSpec configuration and setup
     ├── support/               # Test helpers and shared contexts
     │   └── test_vault_setup.rb # Comprehensive test vault fixture
+    ├── models/                # Model unit tests
+    │   └── vault_spec.rb      # Vault model testing
     └── integration/           # Integration tests
         └── tools/             # Tool-specific integration tests
             └── list_notes_spec.rb # Complete ListNotes tool test
