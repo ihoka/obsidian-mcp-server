@@ -66,8 +66,6 @@ module ObsidianMcp
     server
   end
 
-  private
-
   def self.logger
     @logger ||= SemanticLogger['obsidian_mcp']
   end

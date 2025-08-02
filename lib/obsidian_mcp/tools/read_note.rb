@@ -5,6 +5,7 @@ require_relative '../base/tool'
 module ObsidianMcp
   module Tools
     class ReadNote < ObsidianMcp::Base::Tool
+      tool_name 'read_note'
       description 'Read the content of a specific note from the Obsidian vault'
 
       arguments do

@@ -6,6 +6,7 @@ require_relative '../services/search_service'
 module ObsidianMcp
   module Tools
     class FindByTags < ObsidianMcp::Base::Tool
+      tool_name 'find_by_tags'
       description 'Find notes that have specific tags'
 
       arguments do

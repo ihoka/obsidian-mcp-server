@@ -16,6 +16,7 @@ run = [
 
 [tasks.dev]
 description = "Start the Obsidian MCP server with sample vault"
+depends = ["bundle"]
 run = [
     "./obsidian_server.rb"
 ]
@@ -32,7 +33,7 @@ run = [
     "bundle exec rubocop --auto-gen-config"
 ]
 
-[tasks."docker:build"]
+[tasks."docker:build:prod"]
 description = "Build the production Docker image"
 run = [
     "docker build -t obsidian-mcp-server ."
@@ -44,6 +45,13 @@ run = [
     "docker build -f Dockerfile.dev -t obsidian-mcp-server:dev ."
 ]
 
+[tasks."docker:build"]
+description = "Build the Docker images"
+depends = [
+    "docker:build:prod",
+    "docker:build:dev"
+]
+
 [tasks."mcp:inspect"]
 description = "Inspect the MCP server"
 depends = ["docker:build:dev"]
@@ -52,3 +60,18 @@ run = '''
     docker run -i --rm -v $OBSIDIAN_VAULT_PATH:/vault \
     obsidian-mcp-server:dev
 '''
+
+[tasks.test]
+description = "Run tests"
+depends = ["bundle"]
+run = [
+    "bundle exec rspec"
+]
+
+[tasks.build]
+description = "Run a full build process"
+depends = [
+    "test",
+    "rubocop:fix",
+    "docker:build",
+]

@@ -11,4 +11,4 @@ end
 
 gem 'rubocop-rspec', '~> 3.6'
 
-gem "semantic_logger", "~> 4.17"
+gem 'semantic_logger', '~> 4.17'

@@ -6,6 +6,7 @@ require_relative '../services/search_service'
 module ObsidianMcp
   module Tools
     class SearchNotes < ObsidianMcp::Base::Tool
+      tool_name 'search_notes'
       description 'Search for notes in the Obsidian vault by query text'
 
       arguments do

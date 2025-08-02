@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 require 'semantic_logger'
 
 SemanticLogger.default_level = :debug
-SemanticLogger.add_appender(io: STDERR)
+SemanticLogger.add_appender(io: $stderr)

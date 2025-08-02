@@ -6,6 +6,7 @@ require_relative '../services/search_service'
 module ObsidianMcp
   module Tools
     class ListNotes < ObsidianMcp::Base::Tool
+      tool_name 'list_notes'
       description 'List all notes in the Obsidian vault with basic metadata'
 
       arguments do
