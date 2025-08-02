@@ -2,6 +2,8 @@
 ruby = "3.4.4"
 lazygit = "latest"
 gh = "latest"
+bun = "latest"
+claude = "latest"
 
 [env]
 OBSIDIAN_VAULT_PATH = "../obsidian-test-notes/notes"
@@ -40,4 +42,21 @@ run = [
 description = "Build the development Docker image"
 run = [
     "docker build -f Dockerfile.dev -t obsidian-mcp-server:dev ."
+]
+
+[tasks."mcp:inspect"]
+description = "Inspect the MCP server"
+run = [
+    "bunx",
+    "@modelcontextprotocol/inspector",
+    "docker",
+    "run",
+    "--rm",
+    "-v",
+    "$OBSIDIAN_VAULT_PATH:/vault",
+    "-e",
+    "OBSIDIAN_VAULT_PATH=/vault",
+    "-p",
+    "8080:8080",
+    "obsidian-mcp-server:dev"
 ]
