@@ -32,37 +32,43 @@ require_relative 'obsidian_mcp/resources/tag_cloud'
 
 module ObsidianMcp
   def self.create_server
-    $log.debug "Creating MCP server: #{Config.server_name} v#{Config.server_version}"
+    logger.debug "Creating MCP server: #{Config.server_name} v#{Config.server_version}"
     server = FastMcp::Server.new(
       name: Config.server_name,
       version: Config.server_version
     )
 
     # Register tools
-    $log.trace 'Registering tools...'
+    logger.trace 'Registering tools...'
 
     server.register_tool(Tools::SearchNotes)
-    $log.trace 'Registered SearchNotes tool'
+    logger.trace 'Registered SearchNotes tool'
 
     server.register_tool(Tools::ReadNote)
-    $log.trace 'Registered ReadNote tool'
+    logger.trace 'Registered ReadNote tool'
 
     server.register_tool(Tools::ListNotes)
-    $log.trace 'Registered ListNotes tool'
+    logger.trace 'Registered ListNotes tool'
 
     server.register_tool(Tools::FindByTags)
-    $log.trace 'Registered FindByTags tool'
+    logger.trace 'Registered FindByTags tool'
 
     # Register resources
-    $log.trace 'Registering resources...'
+    logger.trace 'Registering resources...'
 
     server.register_resource(Resources::VaultStatistics)
-    $log.trace 'Registered VaultStatistics resource'
+    logger.trace 'Registered VaultStatistics resource'
 
     server.register_resource(Resources::TagCloud)
-    $log.trace 'Registered TagCloud resource'
+    logger.trace 'Registered TagCloud resource'
 
-    $log.trace 'Server creation complete'
+    logger.trace 'Server creation complete'
     server
+  end
+
+  private
+
+  def self.logger
+    @logger ||= SemanticLogger['obsidian_mcp']
   end
 end
