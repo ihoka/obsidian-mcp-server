@@ -1,5 +1,10 @@
 # Obsidian MCP Server 🧠
 
+<p align="center">
+  <a href="https://github.com/ihoka/obsidian-mcp-server/workflows/ci/badge.svg"><img src="https://github.com/obsidian-mcp-server/workflows/ci/badge.svg" alt="CI Status" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" /></a>
+</p>
+
 A Ruby-based Model Context Protocol (MCP) server for interacting with Obsidian vaults. Built with [fast-mcp](https://github.com/yjacquin/fast-mcp), this server allows AI models to search, read, and analyze your evergreen notes.
 
 ## Features
