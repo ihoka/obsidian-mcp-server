@@ -40,7 +40,7 @@ module ObsidianMcp
         return [nil, content] if parts.length < 3
 
         begin
-          frontmatter = YAML.safe_load(parts[1])
+          frontmatter = YAML.safe_load(parts[1], permitted_classes: [Time])
           body = parts[2].strip
           [frontmatter, body]
         rescue Psych::SyntaxError

@@ -273,6 +273,26 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
         expect(frontmatter['title']).to eq('Test')
         expect(body).to eq("Body content with --- in it.\n--- Another line with dashes")
       end
+
+      it 'handles frontmatter with timestamp objects' do
+        content = <<~CONTENT
+          ---
+          title: "Note with Timestamps"
+          created: 2024-01-15 10:30:00
+          updated: 2024-01-16 14:45:30
+          ---
+          
+          This note has timestamp fields in frontmatter.
+        CONTENT
+
+        frontmatter, body = vault.parse_frontmatter(content)
+        
+        expect(frontmatter).to be_a(Hash)
+        expect(frontmatter['title']).to eq('Note with Timestamps')
+        expect(frontmatter['created']).to be_a(Time)
+        expect(frontmatter['updated']).to be_a(Time)
+        expect(body).to eq('This note has timestamp fields in frontmatter.')
+      end
     end
   end
 
