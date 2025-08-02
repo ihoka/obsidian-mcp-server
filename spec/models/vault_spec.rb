@@ -40,7 +40,7 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
       notes = vault.notes_glob
       expect(notes).to be_an(Array)
       expect(notes.length).to eq(11)
-      
+
       # All returned files should be Pathname objects
       notes.each do |note|
         expect(note).to be_a(Pathname)
@@ -150,15 +150,15 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           tags: ["test", "example"]
           author: "Test Author"
           ---
-          
+
           This is the body content.
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_a(Hash)
         expect(frontmatter['title']).to eq('Test Note')
-        expect(frontmatter['tags']).to eq(['test', 'example'])
+        expect(frontmatter['tags']).to eq(%w[test example])
         expect(frontmatter['author']).to eq('Test Author')
         expect(body).to eq('This is the body content.')
       end
@@ -171,12 +171,12 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
             updated: "2024-01-02"
           tags: ["nested"]
           ---
-          
+
           Body with nested frontmatter.
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter['metadata']).to be_a(Hash)
         expect(frontmatter['metadata']['created']).to eq('2024-01-01')
         expect(body).to eq('Body with nested frontmatter.')
@@ -190,12 +190,12 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           title: "Unclosed quote
           tags: [unclosed
           ---
-          
+
           Body content.
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_nil
         expect(body).to eq(content)
       end
@@ -204,12 +204,12 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
         content = <<~CONTENT
           ---
           title: "Test"
-          
+
           Missing closing delimiter
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_nil
         expect(body).to eq(content)
       end
@@ -217,19 +217,19 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
 
     context 'without frontmatter' do
       it 'returns nil frontmatter for content without frontmatter' do
-        content = "Just plain content without frontmatter."
-        
+        content = 'Just plain content without frontmatter.'
+
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_nil
         expect(body).to eq(content)
       end
 
       it 'handles content starting with --- but not frontmatter' do
-        content = "--- This is just a line, not frontmatter"
-        
+        content = '--- This is just a line, not frontmatter'
+
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_nil
         expect(body).to eq(content)
       end
@@ -238,7 +238,7 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
     context 'edge cases' do
       it 'handles empty content' do
         frontmatter, body = vault.parse_frontmatter('')
-        
+
         expect(frontmatter).to be_nil
         expect(body).to eq('')
       end
@@ -251,7 +251,7 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_a(Hash)
         expect(frontmatter['title']).to eq('Only frontmatter')
         expect(body).to eq('')
@@ -262,13 +262,13 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           ---
           title: "Test"
           ---
-          
+
           Body content with --- in it.
           --- Another line with dashes
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_a(Hash)
         expect(frontmatter['title']).to eq('Test')
         expect(body).to eq("Body content with --- in it.\n--- Another line with dashes")
@@ -281,12 +281,12 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           created: 2024-01-15 10:30:00
           updated: 2024-01-16 14:45:30
           ---
-          
+
           This note has timestamp fields in frontmatter.
         CONTENT
 
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).to be_a(Hash)
         expect(frontmatter['title']).to eq('Note with Timestamps')
         expect(frontmatter['created']).to be_a(Time)
@@ -299,31 +299,31 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
   describe '#extract_links' do
     context 'with internal links' do
       it 'extracts simple internal links' do
-        content = "This references [[Simple Note]] and [[Another Note]]."
-        
+        content = 'This references [[Simple Note]] and [[Another Note]].'
+
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to contain_exactly('Simple Note', 'Another Note')
         expect(links[:external]).to be_empty
       end
 
       it 'extracts internal links with special characters' do
-        content = "Links to [[Note with Spaces]] and [[Note-with-dashes]] and [[Note_with_underscores]]."
-        
+        content = 'Links to [[Note with Spaces]] and [[Note-with-dashes]] and [[Note_with_underscores]].'
+
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to contain_exactly(
-          'Note with Spaces', 
-          'Note-with-dashes', 
+          'Note with Spaces',
+          'Note-with-dashes',
           'Note_with_underscores'
         )
       end
 
       it 'extracts links but stops at first closing bracket' do
-        content = "This has [[Link with [brackets] inside]] and [[Normal Link]]."
-        
+        content = 'This has [[Link with [brackets] inside]] and [[Normal Link]].'
+
         links = vault.extract_links(content)
-        
+
         # Current regex [^\]]+ stops at first ] so nested brackets don't work
         expect(links[:internal]).to contain_exactly('Normal Link')
       end
@@ -331,10 +331,10 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
 
     context 'with external links' do
       it 'extracts simple external links' do
-        content = "Visit [Google](https://google.com) and [GitHub](https://github.com)."
-        
+        content = 'Visit [Google](https://google.com) and [GitHub](https://github.com).'
+
         links = vault.extract_links(content)
-        
+
         expect(links[:external]).to contain_exactly(
           { text: 'Google', url: 'https://google.com' },
           { text: 'GitHub', url: 'https://github.com' }
@@ -350,9 +350,9 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           - [FTP](ftp://files.example.com)
           - [Email](mailto:test@example.com)
         CONTENT
-        
+
         links = vault.extract_links(content)
-        
+
         expect(links[:external]).to contain_exactly(
           { text: 'HTTPS', url: 'https://example.com' },
           { text: 'HTTP', url: 'http://example.com' },
@@ -370,9 +370,9 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           And reference [[Another Internal]] note.
           Visit [Another Site](https://test.com) too.
         CONTENT
-        
+
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to contain_exactly('Internal Note', 'Another Internal')
         expect(links[:external]).to contain_exactly(
           { text: 'External Site', url: 'https://example.com' },
@@ -383,17 +383,17 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
 
     context 'edge cases' do
       it 'handles content with no links' do
-        content = "This content has no links at all."
-        
+        content = 'This content has no links at all.'
+
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to be_empty
         expect(links[:external]).to be_empty
       end
 
       it 'handles empty content' do
         links = vault.extract_links('')
-        
+
         expect(links[:internal]).to be_empty
         expect(links[:external]).to be_empty
       end
@@ -406,9 +406,9 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           [Text](missing-closing-paren
           ]Not a link[
         CONTENT
-        
+
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to be_empty
         expect(links[:external]).to be_empty
       end
@@ -419,9 +419,9 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
           [[Note with émojis 🚀]]
           [Site with symbols ™️](https://example.com/path?param=value&other=123)
         CONTENT
-        
+
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to contain_exactly('Note with émojis 🚀')
         expect(links[:external]).to contain_exactly(
           { text: 'Site with symbols ™️', url: 'https://example.com/path?param=value&other=123' }
@@ -436,7 +436,7 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
         note_path = vault.find_note('tagged-note')
         content = File.read(note_path)
         frontmatter, body = vault.parse_frontmatter(content)
-        
+
         expect(frontmatter).not_to be_nil
         expect(frontmatter['title']).to eq('My Tagged Note')
         expect(frontmatter['tags']).to contain_exactly('project', 'important', 'work')
@@ -447,10 +447,10 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
         note_path = vault.find_note('linked-note')
         content = File.read(note_path)
         links = vault.extract_links(content)
-        
+
         expect(links[:internal]).to contain_exactly(
-          'simple-note', 
-          'tagged-note', 
+          'simple-note',
+          'tagged-note',
           'non-existent-note'
         )
       end
@@ -460,12 +460,12 @@ RSpec.describe ObsidianMcp::Models::Vault, :vault_setup do
       it 'handles file permission errors gracefully' do
         # This test may be skipped on some systems where permission changes don't work as expected
         note_path = vault.find_note('simple-note')
-        
+
         begin
           # Make file unreadable
           original_mode = File.stat(note_path).mode
           File.chmod(0o000, note_path)
-          
+
           expect { File.read(note_path) }.to raise_error(Errno::EACCES)
         ensure
           # Restore original permissions
