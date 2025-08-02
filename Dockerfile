@@ -30,10 +30,6 @@ RUN chown -R obsidian:obsidian /app
 # Switch to non-root user
 USER obsidian
 
-# Set default environment variables
-ENV OBSIDIAN_MCP_SERVER_NAME=obsidian-vault-server
-ENV OBSIDIAN_MCP_SERVER_VERSION=1.0.0
-
 # Expose the default port (MCP typically runs on stdin/stdout, but this allows for flexibility)
 # Note: MCP servers typically communicate via stdin/stdout, not HTTP ports
 # This is mainly for documentation and potential future HTTP interface

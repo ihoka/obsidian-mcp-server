@@ -4,7 +4,7 @@ module ObsidianMcp
   class Config
     class << self
       def vault_path
-        @vault_path ||= ENV.fetch('OBSIDIAN_VAULT_PATH')
+        @vault_path ||= ENV.fetch('OBSIDIAN_VAULT_PATH', '/vault')
       end
 
       attr_writer :vault_path

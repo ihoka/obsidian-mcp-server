@@ -46,17 +46,9 @@ run = [
 
 [tasks."mcp:inspect"]
 description = "Inspect the MCP server"
-run = [
-    "bunx",
-    "@modelcontextprotocol/inspector",
-    "docker",
-    "run",
-    "--rm",
-    "-v",
-    "$OBSIDIAN_VAULT_PATH:/vault",
-    "-e",
-    "OBSIDIAN_VAULT_PATH=/vault",
-    "-p",
-    "8080:8080",
-    "obsidian-mcp-server:dev"
-]
+depends = ["docker:build:dev"]
+run = '''
+    bunx --bun @modelcontextprotocol/inspector \
+    docker run -i --rm -v $OBSIDIAN_VAULT_PATH:/vault \
+    obsidian-mcp-server:dev
+'''

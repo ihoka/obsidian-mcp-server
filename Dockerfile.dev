@@ -31,10 +31,6 @@ RUN chown -R obsidian:obsidian /app
 # Switch to non-root user
 USER obsidian
 
-# Set default environment variables
-ENV OBSIDIAN_MCP_SERVER_NAME=obsidian-vault-server
-ENV OBSIDIAN_MCP_SERVER_VERSION=1.0.0
-
 # Make the main script executable
 RUN chmod +x obsidian_server.rb
 
