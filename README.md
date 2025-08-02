@@ -15,22 +15,22 @@ A Ruby-based Model Context Protocol (MCP) server for interacting with Obsidian v
 
 1. Clone this repository:
 
-```bash
-git clone <repository-url>
-cd obsidian-mcp-server
-```
+   ```bash
+   git clone <repository-url>
+   cd obsidian-mcp-server
+   ```
 
 2. Install dependencies:
 
-```bash
-bundle install
-```
+   ```bash
+   bundle install
+   ```
 
 3. Set your vault path (optional):
 
-```bash
-export OBSIDIAN_VAULT_PATH="/path/to/your/obsidian/vault"
-```
+   ```bash
+   export OBSIDIAN_VAULT_PATH="/path/to/your/obsidian/vault"
+   ```
 
 ## Usage
 
@@ -40,11 +40,7 @@ export OBSIDIAN_VAULT_PATH="/path/to/your/obsidian/vault"
 ./obsidian_server.rb
 ```
 
-The server will automatically discover your vault using these methods:
-
-1. `OBSIDIAN_VAULT_PATH` environment variable
-2. Default test notes in `../obsidian-test-notes/notes`
-3. Other common relative paths
+The server will automatically discover your vault using these methods based on the `OBSIDIAN_VAULT_PATH` environment variable.
 
 ### Available Tools
 
@@ -84,8 +80,6 @@ Get tag usage statistics and counts across your vault.
 Set environment variables to customize the server:
 
 - `OBSIDIAN_VAULT_PATH`: Path to your Obsidian vault
-- `OBSIDIAN_MCP_SERVER_NAME`: Custom server name (default: "obsidian-vault-server")
-- `OBSIDIAN_MCP_SERVER_VERSION`: Custom server version (default: "1.0.0")
 
 ## Architecture
 
@@ -157,8 +151,7 @@ The project follows a clean, modular architecture built on the [fast-mcp](https:
 The server automatically discovers vaults in this priority order:
 
 1. `OBSIDIAN_VAULT_PATH` environment variable
-2. `../obsidian-test-notes/notes` (development default)
-3. Common relative paths for Obsidian vaults
+2. `/vault` (container volume)
 
 ### Data Flow
 
@@ -216,29 +209,29 @@ Run the MCP server using Docker for easy deployment and environment consistency.
 
 1. **Build and run with Docker Compose** (recommended):
 
-```bash
-# Build and start the server
-docker-compose up --build
+   ```bash
+   # Build and start the server
+   docker-compose up --build
 
-# Run in detached mode
-docker-compose up -d --build
+   # Run in detached mode
+   docker-compose up -d --build
 
-# Stop the server
-docker-compose down
-```
+   # Stop the server
+   docker-compose down
+   ```
 
 2. **Build and run with Docker directly**:
 
-```bash
-# Build the image
-docker build -t obsidian-mcp-server .
+   ```bash
+   # Build the image
+   docker build -t obsidian-mcp-server .
 
-# Run the container with your vault mounted
-docker run -it --rm \
-  -v "/path/to/your/obsidian/vault:/vault:ro" \
-  -e OBSIDIAN_VAULT_PATH=/vault \
-  obsidian-mcp-server
-```
+   # Run the container with your vault mounted
+   docker run -it --rm \
+     -v "/path/to/your/obsidian/vault:/vault:ro" \
+     -e OBSIDIAN_VAULT_PATH=/vault \
+     obsidian-mcp-server
+   ```
 
 ### Configuration Options
 
@@ -247,10 +240,6 @@ Set environment variables to customize the Docker deployment:
 ```bash
 # Set your vault path (host machine)
 export OBSIDIAN_VAULT_PATH="/Users/you/Documents/MyVault"
-
-# Optional: customize server settings
-export OBSIDIAN_MCP_SERVER_NAME="my-obsidian-server"
-export OBSIDIAN_MCP_SERVER_VERSION="2.0.0"
 
 # Start with custom configuration
 docker-compose up
@@ -280,18 +269,22 @@ To use the Dockerized server with Claude Desktop, you can run it as a persistent
 
 ```json
 {
-  "mcpServers": {
-    "obsidian-vault": {
-      "command": "docker",
-      "args": [
-        "run", "-i", "--rm",
-        "-v", "/path/to/your/vault:/vault:ro",
-        "-e", "OBSIDIAN_VAULT_PATH=/vault",
-        "obsidian-mcp-server"
-      ]
+    "mcpServers": {
+        "obsidian-vault": {
+            "command": "docker",
+            "disabled": true,
+            "args": [
+                "run",
+                "-i",
+                "--rm",
+                "-v",
+                "/path/to/your/vault:/vault",
+                "obsidian-mcp-server"
+            ]
+        }
     }
-  }
 }
+
 ```
 
 **Note**: Make sure to build the Docker image first: `docker build -t obsidian-mcp-server .`
