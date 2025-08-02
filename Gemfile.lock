@@ -93,6 +93,8 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
+    semantic_logger (4.17.0)
+      concurrent-ruby (~> 1.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -107,6 +109,7 @@ DEPENDENCIES
   rspec (~> 3.12)
   rubocop (~> 1.57)
   rubocop-rspec (~> 3.6)
+  semantic_logger (~> 4.17)
 
 BUNDLED WITH
    2.6.7
