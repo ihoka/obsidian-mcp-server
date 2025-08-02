@@ -14,17 +14,20 @@ A Ruby-based Model Context Protocol (MCP) server for interacting with Obsidian v
 ## Installation
 
 1. Clone this repository:
+
 ```bash
 git clone <repository-url>
 cd obsidian-mcp-server
 ```
 
 2. Install dependencies:
+
 ```bash
 bundle install
 ```
 
 3. Set your vault path (optional):
+
 ```bash
 export OBSIDIAN_VAULT_PATH="/path/to/your/obsidian/vault"
 ```
@@ -38,6 +41,7 @@ export OBSIDIAN_VAULT_PATH="/path/to/your/obsidian/vault"
 ```
 
 The server will automatically discover your vault using these methods:
+
 1. `OBSIDIAN_VAULT_PATH` environment variable
 2. Default test notes in `../obsidian-test-notes/notes`
 3. Other common relative paths
@@ -45,27 +49,34 @@ The server will automatically discover your vault using these methods:
 ### Available Tools
 
 #### 1. Search Notes
+
 Search for notes by query text in titles, tags, or content.
 
 #### 2. Read Note
+
 Read the full content of a specific note by filename or title.
 
 #### 3. List Notes
+
 Get a list of all notes in the vault with basic metadata.
 
 #### 4. Find by Tags
+
 Find notes that contain specific tags with flexible matching options.
 
 ### Available Resources
 
 #### 1. Vault Statistics
+
 Access comprehensive statistics about your vault:
+
 - Total notes and words
 - Average words per note
 - Unique tags count
 - Internal and external link counts
 
 #### 2. Tag Cloud
+
 Get tag usage statistics and counts across your vault.
 
 ## Configuration
@@ -80,7 +91,7 @@ Set environment variables to customize the server:
 
 The project follows a clean, modular architecture built on the [fast-mcp](https://github.com/yjacquin/fast-mcp) Ruby framework:
 
-```
+```txt
 ├── obsidian_server.rb         # Main executable server entry point
 ├── Gemfile                    # Dependencies (fast-mcp ~> 1.5, rspec, rubocop)
 ├── mise.toml                  # Development environment configuration
@@ -117,6 +128,7 @@ The project follows a clean, modular architecture built on the [fast-mcp](https:
 ### Key Components
 
 #### Production Code
+
 - **Server Entry** (`obsidian_server.rb`): Executable script that initializes and starts the MCP server
 - **Configuration** (`config.rb`): Manages vault discovery and environment variables
 - **Models**: Domain objects representing vaults and individual notes with frontmatter parsing
@@ -125,6 +137,7 @@ The project follows a clean, modular architecture built on the [fast-mcp](https:
 - **Resources**: MCP resource implementations providing read-only data access
 
 #### Test Infrastructure
+
 - **Test Suite** (`spec/`): Comprehensive RSpec-based testing with 270+ assertions
 - **Test Vault Setup** (`spec/support/test_vault_setup.rb`): Creates realistic test scenarios with:
   - 11 different note types (simple, tagged, frontmatter-only, empty, malformed, etc.)
@@ -138,6 +151,7 @@ The project follows a clean, modular architecture built on the [fast-mcp](https:
 ### Vault Discovery Logic
 
 The server automatically discovers vaults in this priority order:
+
 1. `OBSIDIAN_VAULT_PATH` environment variable
 2. `../obsidian-test-notes/notes` (development default)
 3. Common relative paths for Obsidian vaults
@@ -197,6 +211,7 @@ Run the MCP server using Docker for easy deployment and environment consistency.
 ### Quick Start with Docker
 
 1. **Build and run with Docker Compose** (recommended):
+
 ```bash
 # Build and start the server
 docker-compose up --build
@@ -209,6 +224,7 @@ docker-compose down
 ```
 
 2. **Build and run with Docker directly**:
+
 ```bash
 # Build the image
 docker build -t obsidian-mcp-server .
@@ -309,6 +325,7 @@ The Docker setup mounts your Obsidian vault as a read-only volume for security:
 ### Development Setup
 
 1. Install dependencies:
+
 ```bash
 mise run bundle
 # or
@@ -316,6 +333,7 @@ bundle install
 ```
 
 2. Run the development server:
+
 ```bash
 mise run dev
 # or
@@ -323,6 +341,7 @@ mise run dev
 ```
 
 3. Run tests:
+
 ```bash
 bundle exec rspec
 ```
@@ -383,6 +402,7 @@ bundle exec rspec spec/integration/
 ### CI/CD
 
 GitHub Actions automatically:
+
 - Runs the full test suite on Ruby 3.4
 - Enforces code style with RuboCop
 - Runs integration tests
@@ -394,10 +414,12 @@ GitHub Actions automatically:
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes following the code style guidelines
 4. Run tests and fix any style violations:
+
    ```bash
    bundle exec rspec
    mise run rubocop-fix
    ```
+
 5. Commit your changes (`git commit -m 'Add some amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
